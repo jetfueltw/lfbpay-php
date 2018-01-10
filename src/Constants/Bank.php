@@ -1,6 +1,6 @@
 <?php
 
-namespace Jetfuel\Wefupay\Constants;
+namespace Jetfuel\Lfbpay\Constants;
 
 class Bank
 {

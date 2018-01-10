@@ -1,6 +1,6 @@
 <?php
 
-namespace Jetfuel\Wefupay\Traits;
+namespace Jetfuel\Lfbpay\Traits;
 
 trait ResultParser
 {
@@ -12,6 +12,7 @@ trait ResultParser
      */
     public function parseResponse($response)
     {
+        var_dump($response);
         $dinpay = new \SimpleXMLElement($response);
 
         return json_decode(json_encode($dinpay->response[0]), true);

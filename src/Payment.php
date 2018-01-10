@@ -1,15 +1,15 @@
 <?php
 
-namespace Jetfuel\Wefupay;
+namespace Jetfuel\Lfbpay;
 
-use Jetfuel\Wefupay\HttpClient\GuzzleHttpClient;
+use Jetfuel\Lfbpay\HttpClient\CurlHttpClient;
 
 class Payment
 {
-    const BASE_API_URL = 'https://api.wefupay.com/';
-    const TIME_ZONE    = 'Asia/Shanghai';
-    const TIME_FORMAT  = 'Y-m-d H:i:s';
-    const SIGN_TYPE    = 'RSA-S';
+    const BASE_API_URL = 'http://gate.lfbpay.com/cooperate/gateway.cgi/';
+    const SIGN_TYPE    = 'MD5';
+    const API_VERSION  = '1.0.0.0';
+    const SUMMARY = 'GOODS_NAME';
 
     /**
      * @var string
@@ -27,7 +27,7 @@ class Payment
     protected $baseApiUrl;
 
     /**
-     * @var \Jetfuel\Wefupay\HttpClient\HttpClientInterface
+     * @var \Jetfuel\Lfbpay\HttpClient\HttpClientInterface
      */
     protected $httpClient;
 
@@ -35,16 +35,17 @@ class Payment
      * Payment constructor.
      *
      * @param string $merchantId
-     * @param string $privateKey
+     * @param string $secretKey
      * @param string $baseApiUrl
      */
-    protected function __construct($merchantId, $privateKey, $baseApiUrl = null)
+    protected function __construct($merchantId, $secretKey, $baseApiUrl = null)
     {
         $this->merchantId = $merchantId;
-        $this->privateKey = $privateKey;
+        $this->secretKey = $secretKey;
         $this->baseApiUrl = $baseApiUrl === null ? self::BASE_API_URL : $baseApiUrl;
 
-        $this->httpClient = new GuzzleHttpClient($this->baseApiUrl);
+        //$this->httpClient = new GuzzleHttpClient($this->baseApiUrl);
+        $this->httpClient = new CurlHttpClient($this->baseApiUrl);
     }
 
     /**
@@ -55,10 +56,8 @@ class Payment
      */
     protected function signPayload(array $payload)
     {
-        $payload['merchant_code'] = $this->merchantId;
-        $payload['sign'] = Signature::generate($payload, $this->privateKey);
-        $payload['sign_type'] = self::SIGN_TYPE;
-
+        $payload['sign'] = Signature::generate($payload, $this->secretKey);
+        
         return $payload;
     }
 
@@ -67,8 +66,8 @@ class Payment
      *
      * @return string
      */
-    protected function getCurrentTime()
+    /*protected function getCurrentTime()
     {
         return (new \DateTime('now', new \DateTimeZone(self::TIME_ZONE)))->format(self::TIME_FORMAT);
-    }
+    }*/
 }

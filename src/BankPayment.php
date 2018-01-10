@@ -1,10 +1,10 @@
 <?php
 
-namespace Jetfuel\Wefupay;
+namespace Jetfuel\Lfbpay;
 
 class BankPayment extends Payment
 {
-    const BASE_API_URL = 'https://pay.wefupay.com/';
+    const BASE_API_URL = 'https://pay.lfbpay.com/';
     const API_VERSION  = 'V3.0';
     const SERVICE_TYPE = 'direct_pay';
     const PRODUCT_NAME = 'PRODUCT_NAME';

@@ -1,8 +1,8 @@
 <?php
 
-namespace Jetfuel\Wefupay\Traits;
+namespace Jetfuel\Lfbpay\Traits;
 
-use Jetfuel\Wefupay\Signature;
+use Jetfuel\Lfbpay\Signature;
 
 trait NotifyWebhook
 {

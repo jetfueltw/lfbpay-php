@@ -4,42 +4,38 @@ namespace Test;
 
 use Faker\Factory;
 
-use Jetfuel\Wefupay\BankPayment;
-use Jetfuel\Wefupay\Constants\Bank;
-use Jetfuel\Wefupay\Constants\Channel;
-use Jetfuel\Wefupay\DigitalPayment;
-use Jetfuel\Wefupay\TradeQuery;
-use Jetfuel\Wefupay\Traits\NotifyWebhook;
+use Jetfuel\Lfbpay\BankPayment;
+use Jetfuel\Lfbpay\Constants\Bank;
+use Jetfuel\Lfbpay\Constants\Channel;
+use Jetfuel\Lfbpay\DigitalPayment;
+use Jetfuel\Lfbpay\TradeQuery;
+use Jetfuel\Lfbpay\Traits\NotifyWebhook;
 use PHPUnit\Framework\TestCase;
 
 class UnitTest extends TestCase
 {
     private $merchantId;
-    private $merchantPrivateKey;
+    private $secretKey;
 
     public function __construct($name = null, array $data = [], $dataName = '')
     {
         parent::__construct($name, $data, $dataName);
 
         $this->merchantId = getenv('MERCHANT_ID');
-        $this->merchantPrivateKey = getenv('MERCHANT_PRIVATE_KEY');
+        $this->secretKey = getenv('MD5_KEY');
     }
 
     public function testDigitalPaymentOrder()
     {
         $faker = Factory::create();
-        $tradeNo = str_replace('-', '', $faker->uuid);
-        $channel = Channel::WECHAT;
+        $tradeNo = date('YmdHis').rand(10000, 99999);
+        $channel = Channel::ALIPAY;
         $amount = 1;
         $clientIp = $faker->ipv4;
         $notifyUrl = $faker->url;
-        echo $tradeNo . ' ; ' . $channel . ' ; ' . $amount .' ; ' .  $clientIp . ' ; ' .$notifyUrl . '\n';
 
-        $payment = new DigitalPayment($this->merchantId, $this->merchantPrivateKey);
+        $payment = new DigitalPayment($this->merchantId, $this->secretKey);
         $result = $payment->order($tradeNo, $channel, $amount, $clientIp, $notifyUrl);
-
-        echo ' result_code = ' . $result['result_code'] . '\r\n';
-        echo ' error_code = ' . $result['error_code'];
 
         $this->assertEquals('0', $result['result_code']);
 
@@ -51,28 +47,28 @@ class UnitTest extends TestCase
      *
      * @param $tradeNo
      */
-    public function testDigitalPaymentOrderFind($tradeNo)
+    /*public function testDigitalPaymentOrderFind($tradeNo)
     {
         $tradeQuery = new TradeQuery($this->merchantId, $this->merchantPrivateKey);
         $result = $tradeQuery->find($tradeNo);
 
         $this->assertEquals('T', $result['is_success']);
-    }
+    }*/
 
     /**
      * @depends testDigitalPaymentOrder
      *
      * @param $tradeNo
      */
-    public function testDigitalPaymentOrderIsPaid($tradeNo)
+    /*public function testDigitalPaymentOrderIsPaid($tradeNo)
     {
         $tradeQuery = new TradeQuery($this->merchantId, $this->merchantPrivateKey);
         $result = $tradeQuery->isPaid($tradeNo);
 
         $this->assertFalse($result);
-    }
+    }*/
 
-    public function testBankPaymentOrder()
+    /*public function testBankPaymentOrder()
     {
         $faker = Factory::create();
         $tradeNo = str_replace('-', '', $faker->uuid);
@@ -87,9 +83,9 @@ class UnitTest extends TestCase
         $this->assertContains('<form', $result, '', true);
 
         return $tradeNo;
-    }
+    }*/
 
-    public function testTradeQueryFindOrderNotExist()
+    /*public function testTradeQueryFindOrderNotExist()
     {
         $faker = Factory::create();
         $tradeNo = str_replace('-', '', $faker->uuid);
@@ -98,9 +94,9 @@ class UnitTest extends TestCase
         $result = $tradeQuery->find($tradeNo);
 
         $this->assertNull($result);
-    }
+    }*/
 
-    public function testTradeQueryIsPaidOrderNotExist()
+    /*public function testTradeQueryIsPaidOrderNotExist()
     {
         $faker = Factory::create();
         $tradeNo = str_replace('-', '', $faker->uuid);
@@ -109,9 +105,9 @@ class UnitTest extends TestCase
         $result = $tradeQuery->isPaid($tradeNo);
 
         $this->assertFalse($result);
-    }
+    }*/
 
-    public function testNotifyWebhookVerifyNotifyPayload()
+    /*public function testNotifyWebhookVerifyNotifyPayload()
     {
         $mock = $this->getMockForTrait(NotifyWebhook::class);
 
@@ -139,9 +135,9 @@ PtOCDSiKZhtzHw5HOjXKteBpYBqEBOZc9pNjP/fKbvBNZ3Z7XxUn5ECfQbPCtH9y
 -----END PUBLIC KEY-----';
 
         $this->assertTrue($mock->verifyNotifyPayload($payload, $dinpayPublicKey));
-    }
+    }*/
 
-    public function testNotifyWebhookParseNotifyPayload()
+    /*public function testNotifyWebhookParseNotifyPayload()
     {
         $mock = $this->getMockForTrait(NotifyWebhook::class);
 
@@ -169,12 +165,12 @@ PtOCDSiKZhtzHw5HOjXKteBpYBqEBOZc9pNjP/fKbvBNZ3Z7XxUn5ECfQbPCtH9y
 -----END PUBLIC KEY-----';
 
         $this->assertEquals($payload, $mock->parseNotifyPayload($payload, $dinpayPublicKey));
-    }
+    }*/
 
-    public function testNotifyWebhookSuccessNotifyResponse()
+    /*public function testNotifyWebhookSuccessNotifyResponse()
     {
         $mock = $this->getMockForTrait(NotifyWebhook::class);
 
         $this->assertEquals('SUCCESS', $mock->successNotifyResponse());
-    }
+    }*/
 }

@@ -1,17 +1,13 @@
 <?php
 
-namespace Jetfuel\Wefupay;
+namespace Jetfuel\Lfbpay;
 
-use Jetfuel\Wefupay\Traits\ResultParser;
+use Jetfuel\Lfbpay\Traits\ResultParser;
 
 class DigitalPayment extends Payment
 {
     use ResultParser;
-
-    const BASE_API_URL = 'https://api.wefupay.com/';
-    const API_VERSION  = 'V3.1';
-    const PRODUCT_NAME = 'PRODUCT_NAME';
-
+ 
     /**
      * DigitalPayment constructor.
      *
@@ -39,16 +35,20 @@ class DigitalPayment extends Payment
     public function order($tradeNo, $channel, $amount, $clientIp, $notifyUrl)
     {
         $payload = $this->signPayload([
-            'order_no'          => $tradeNo,
-            'service_type'      => $channel,
-            'order_amount'      => $amount,
-            'order_time'        => $this->getCurrentTime(),
-            'client_ip'         => $clientIp,
-            'notify_url'        => $notifyUrl,
-            'interface_version' => self::API_VERSION,
-            'product_name'      => self::PRODUCT_NAME,
+            'service'   =>  'TRADE.SCANPAY',
+            'version'   =>  parent::API_VERSION,
+            'merId'     =>  $this->merchantId,
+            'typeId'    =>  $channel,
+            'tradeNo'   =>  $tradeNo,
+            'amount'    =>  $amount,
+            'notifyUrl' =>  $notifyUrl,
+            'summary'   =>  parent::SUMMARY,
+            'clientIp'  =>  $clientIp,
         ]);
+        
+        $data = Signature::buildBaseString($payload);
+        var_dump($data);
 
-        return $this->parseResponse($this->httpClient->post('gateway/api/scanpay', $payload));
+        return $this->parseResponse($this->httpClient->post('', $data));
     }
 }

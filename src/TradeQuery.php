@@ -1,14 +1,14 @@
 <?php
 
-namespace Jetfuel\Wefupay;
+namespace Jetfuel\Lfbpay;
 
-use Jetfuel\Wefupay\Traits\ResultParser;
+use Jetfuel\Lfbpay\Traits\ResultParser;
 
 class TradeQuery extends Payment
 {
     use ResultParser;
 
-    const BASE_API_URL = 'https://query.wefupay.com/';
+    const BASE_API_URL = 'https://query.lfbpay.com/';
     const API_VERSION  = 'V3.0';
     const SERVICE_TYPE = 'single_trade_query';
 

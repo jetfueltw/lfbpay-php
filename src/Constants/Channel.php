@@ -1,26 +1,21 @@
 <?php
 
-namespace Jetfuel\Wefupay\Constants;
+namespace Jetfuel\Lfbpay\Constants;
 
 class Channel
 {
     /**
      * 微信支付
      */
-    const WECHAT = 'weixin_scan';
+    const WECHAT = '2';
 
     /**
      * 支付寶
      */
-    const ALIPAY = 'alipay_scan';
+    const ALIPAY = '1';
 
-    /**
-     * 財付通
+     /**
+     * QQ錢包
      */
-    const TENPAY = 'tenpay_scan';
-
-    /**
-     * 京東支付
-     */
-    const JDPAY = 'jdpay_scan';
+    const QQ = '3';
 }

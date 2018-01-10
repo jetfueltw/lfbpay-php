@@ -1,6 +1,6 @@
 <?php
 
-namespace Jetfuel\Wefupay;
+namespace Jetfuel\Lfbpay;
 
 class Signature
 {
@@ -11,11 +11,11 @@ class Signature
      * @param string $privateKey
      * @return string
      */
-    public static function generate(array $payload, $privateKey)
+    public static function generate(array $payload, $secretKey)
     {
-        $baseString = self::buildBaseString($payload);
+        $baseString = self::buildBaseString($payload) . $secretKey;
 
-        return base64_encode(self::rsaSign($baseString, $privateKey));
+        return self::md5Hash($baseString);
     }
 
     /**
@@ -33,9 +33,9 @@ class Signature
         return self::rsaVerify($baseString, $publicKey, $signature);
     }
 
-    private static function buildBaseString(array $payload)
+    public static function buildBaseString(array $payload)
     {
-        ksort($payload);
+        //ksort($payload);
 
         $baseString = '';
         foreach ($payload as $key => $value) {
@@ -43,6 +43,12 @@ class Signature
         }
 
         return rtrim($baseString, '&');
+    }
+
+    private static function md5Hash($data)
+    {
+        //return strtoupper(md5($data));
+        return md5($data);
     }
 
     private static function rsaSign($baseString, $privateKey)

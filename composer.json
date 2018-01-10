@@ -1,6 +1,6 @@
 {
-  "name": "jetfueltw/wefupay-php",
-  "description": "wefupay payment gateway php package",
+  "name": "jetfueltw/lfbpay-php",
+  "description": "lfbpay payment gateway php package",
   "keywords": [
     "payment",
     "payment gateway"
@@ -23,7 +23,7 @@
   },
   "autoload": {
     "psr-4": {
-      "Jetfuel\\Wefupay\\": "src"
+      "Jetfuel\\Lfbpay\\": "src"
     }
   },
   "autoload-dev": {

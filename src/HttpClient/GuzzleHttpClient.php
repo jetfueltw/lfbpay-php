@@ -1,6 +1,6 @@
 <?php
 
-namespace Jetfuel\Wefupay\HttpClient;
+namespace Jetfuel\Lfbpay\HttpClient;
 
 use GuzzleHttp\Client;
 
